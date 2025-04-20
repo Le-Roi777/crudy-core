@@ -7,7 +7,7 @@
   "homepage": "https://github.com/Le-Roi777/crudy-core#readme",
   "type": "module",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/lib/types/index.d.ts",
   "files": [
     "dist"
   ],
@@ -27,7 +27,7 @@
     "build": "tsc",
     "test": "jest",
     "clean": "rimraf dist",
-    "prepare": "npm run clean && npm run build",
+    "prep": "npm run clean && npm run build",
     "lint": "eslint src --ext .ts",
     "type-check": "tsc --noEmit"
   },

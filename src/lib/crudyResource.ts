@@ -1,39 +1,12 @@
-import { ZodSchema } from 'zod';
-
-export type CRUDOptions<TReq = any, TRes = any> = {
-
-    fetcher?: typeof fetch;
-    serializer?: (data: TReq) => any;
-    deserializer?: (data: any) => TRes;
-
-    hooks?: {
-        onBefore?: (operation: string, payload?: TReq) => void;
-        onSuccess?: (operation: string, response: TRes) => void;
-        onError?: (operation: string, error: any) => void;
-    };
-
-    schemas?: {
-        request?: {
-            create?: ZodSchema<TReq>;
-            update?: ZodSchema<TReq>;
-        };
-        response?: {
-            get?: ZodSchema<TRes>;
-            list?: ZodSchema<TRes[]>;
-            create?: ZodSchema<TRes>;
-            update?: ZodSchema<TRes>;
-        };
-    };
-
-};
+import { CrudyCrudOptions} from "./crudyCrudOptions";
 
 // Util: Build query string from an object
 const queryString = (query?: Record<string, any>) =>
     query ? `?${new URLSearchParams(query).toString()}` : '';
 
-export function createResource<TReq = any, TRes = any>(
+function crudyResource<TReq = any, TRes = any>(
     baseUrl: string,
-    options: CRUDOptions<TReq, TRes> = {}
+    options: CrudyCrudOptions<TReq, TRes> = {}
 ) {
 
     const {
@@ -48,7 +21,7 @@ export function createResource<TReq = any, TRes = any>(
         method: string,
         url: string,
         body?: TReq,
-        schemaKey?: keyof NonNullable<NonNullable<CRUDOptions<TReq, TRes>['schemas']>['response']>
+        schemaKey?: keyof NonNullable<NonNullable<CrudyCrudOptions<TReq, TRes>['schemas']>['response']>
     ): Promise<TResp> => {
 
         hooks.onBefore?.(method, body);
@@ -110,3 +83,5 @@ export function createResource<TReq = any, TRes = any>(
     };
 
 }
+
+export { crudyResource };

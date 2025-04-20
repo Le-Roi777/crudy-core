@@ -1,4 +1,4 @@
-import { createResource } from '../src';
+import { crudyResource } from '../src';
 
 describe("createResource", () => {
 
@@ -21,7 +21,7 @@ describe("createResource", () => {
       json: jest.fn().mockResolvedValue({ id, name: "example" }),
     });
 
-    const resource = createResource(resourceUrl);
+    const resource = crudyResource(resourceUrl);
 
     const result = await resource.get(id);
 
@@ -43,7 +43,7 @@ describe("createResource", () => {
       json: jest.fn().mockResolvedValue([{ id: 1, name: "example" }]),
     });
 
-    const resource = createResource(resourceUrl);
+    const resource = crudyResource(resourceUrl);
     const result = await resource.list(query);
 
     expect(fetchMock).toHaveBeenCalledWith(
@@ -67,7 +67,7 @@ describe("createResource", () => {
       json: jest.fn().mockResolvedValue(createdResource),
     });
 
-    const resource = createResource(resourceUrl);
+    const resource = crudyResource(resourceUrl);
     const result = await resource.create(newResource);
 
     expect(fetchMock).toHaveBeenCalledWith(resourceUrl, {
@@ -90,7 +90,7 @@ describe("createResource", () => {
       json: jest.fn().mockResolvedValue(updatedResource),
     });
 
-    const resource = createResource(resourceUrl);
+    const resource = crudyResource(resourceUrl);
     const result = await resource.update(id, updatedResource);
 
     expect(fetchMock).toHaveBeenCalledWith(`${resourceUrl}/${id}`, {
@@ -112,7 +112,7 @@ describe("createResource", () => {
       json: jest.fn(),
     });
 
-    const resource = createResource(resourceUrl);
+    const resource = crudyResource(resourceUrl);
     await resource.delete(id);
 
     expect(fetchMock).toHaveBeenCalledWith(`${resourceUrl}/${id}`, {
@@ -135,7 +135,7 @@ describe("createResource", () => {
       json: jest.fn().mockResolvedValue({ id: 1, name: "example" }),
     });
 
-    const resource = createResource(resourceUrl, { hooks });
+    const resource = crudyResource(resourceUrl, { hooks });
 
     const id = 1;
     const result = await resource.get(id);
@@ -160,7 +160,7 @@ describe("createResource", () => {
       statusText: "Not Found",
     });
 
-    const resource = createResource(resourceUrl, { hooks });
+    const resource = crudyResource(resourceUrl, { hooks });
 
     const id = 1;
 

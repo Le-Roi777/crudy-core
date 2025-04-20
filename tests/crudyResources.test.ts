@@ -1,4 +1,4 @@
-import { createResources } from '../src';
+import { crudyResources } from '../src';
 
 describe("createResources", () => {
 
@@ -35,7 +35,7 @@ describe("createResources", () => {
 
         };
 
-        const resources = createResources(endpoints, sharedOptions);
+        const resources = crudyResources(endpoints, sharedOptions);
 
         // Check if the resource object contains the proper keys
         expect(resources).toHaveProperty("users");
@@ -76,7 +76,7 @@ describe("createResources", () => {
             json: jest.fn().mockResolvedValue(mockPostResponse),
         });
 
-        const resources = createResources(endpoints);
+        const resources = crudyResources(endpoints);
         const userResult = await resources.users.get(1);
 
         expect(fetchMock).toHaveBeenCalledWith(
