@@ -7,7 +7,7 @@
   "homepage": "https://github.com/Le-Roi777/crudy-core#readme",
   "type": "module",
   "main": "dist/index.js",
-  "types": "dist/lib/types/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],

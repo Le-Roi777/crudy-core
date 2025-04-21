@@ -7,7 +7,7 @@ Crudy Core is a lightweight TypeScript library for creating CRUD (Create, Read, 
 
 ## 📦 Installation
 ```bash
-npm install crud-core zod
+npm install crudy-core zod
 ```
 > ⚠️ `zod` is required only if you want request/response schema validation.
 
@@ -28,78 +28,42 @@ npm install crud-core zod
 ---
 
 ## 🧪 JavaScript Example
+
+### Single resource client
+
 ```js
-import { createResource, createResources } from 'crud-core';
+import { crudyResource } from 'crudy-core';
 
-// Create a single resource client
-const users = createResource('https://api.example.com/users');
+const users = crudyResource('https://api.example.com/users');
 
-// Use the client to interact with the API
 const allUsers = await users.list();
 const user = await users.get(1);
 const newUser = await users.create({ name: 'John Doe' });
 const updatedUser = await users.update(1, { name: 'Jane Doe' });
 await users.delete(1);
+```
+---
 
-// Create multiple resource clients
-const api = createResources({
+### Multiple resource clients
+
+```javascript
+import { crudyResources } from 'crudy-core';
+
+const api = crudyResources({
     users: 'https://api.example.com/users',
     posts: 'https://api.example.com/posts',
 });
 
-// Use the clients
 const usersList = await api.users.list();
 const postsList = await api.posts.list();
 ```
+
 ---
 
-## 🛠 TypeScript Usage
+### Lifecycle hooks
 
-### ✅ With Generics
-```ts
-import { createResource } from 'crud-core';
-
-type User = { id: number; name: string };
-const users = createResource<Omit<User, 'id'>, User>('/api/users');
-
-// Fully typed
-await users.create({ name: 'Alice' });
-const result: User[] = await users.list();
-```
----
-
-### ✅ With Zod Schema Validation
-```ts
-
-import { z } from 'zod';
-import { createResource } from 'crud-core';
-
-const UserSchema = z.object({
-    id: z.number(),
-    name: z.string(),
-});
-
-const NewUserSchema = UserSchema.omit({ id: true });
-
-const users = createResource('/api/users', {
-    schemas: {
-        request: {
-            create: NewUserSchema,
-            update: NewUserSchema,
-        },
-        response: {
-            get: UserSchema,
-            list: z.array(UserSchema),
-        },
-    },
-});
-```
----
-
-### ✅ With Lifecycle Hooks
-```ts
-
-const users = createResource('/api/users', {
+```javascript
+const users = crudyResource('/api/users', {
     hooks: {
         onBefore: (action, payload) => {
             console.log(`[START] ${action}`, payload);
@@ -109,6 +73,47 @@ const users = createResource('/api/users', {
         },
         onError: (action, err) => {
             console.error(`[ERROR] ${action}`, err);
+        },
+    },
+});
+```
+---
+
+## 🛠 TypeScript Example
+
+### ✅ With Generics
+```ts
+import { crudyResource } from 'crudy-core';
+
+type User = { id: number; name: string };
+const users = crudyResource<Omit<User, 'id'>, User>('/api/users');
+
+await users.create({ name: 'Alice' });
+const result: User[] = await users.list();
+```
+---
+
+### ✅ With Zod Schema Validation
+```ts
+import { z } from 'zod';
+import { crudyResource } from 'crudy-core';
+
+const UserSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+});
+
+const NewUserSchema = UserSchema.omit({ id: true });
+
+const users = crudyResource('/api/users', {
+    schemas: {
+        request: {
+            create: NewUserSchema,
+            update: NewUserSchema,
+        },
+        response: {
+            get: UserSchema,
+            list: z.array(UserSchema),
         },
     },
 });
@@ -152,7 +157,8 @@ resource.delete(id, query?)
 
 ---
 
-🪪 License
+## 🪪 License
+
 MIT
 
 ---
