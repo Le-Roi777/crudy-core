@@ -1,10 +1,14 @@
 {
   "name": "crudy-core",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "private": "true",
   "author": "",
   "license": "MIT",
   "description": "CRUD resource creation utility",
   "homepage": "https://github.com/Le-Roi777/crudy-core#readme",
+  "publishConfig": {
+    "access": "restricted"
+  },
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
